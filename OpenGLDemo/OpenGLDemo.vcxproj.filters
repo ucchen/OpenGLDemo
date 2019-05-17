@@ -16,6 +16,9 @@
     <Filter Include="源文件\glad">
       <UniqueIdentifier>{763d5fb6-ab7b-47fe-8950-e19c2d306dfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\shader">
+      <UniqueIdentifier>{a9eebeb3-0825-4b02-a1d1-a4fa0fe90b03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,5 +27,13 @@
     <ClCompile Include="glad\glad.c">
       <Filter>源文件\glad</Filter>
     </ClCompile>
+    <ClCompile Include="shader\Shader.cpp">
+      <Filter>源文件\shader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="shader\Shader.h">
+      <Filter>源文件\shader</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
