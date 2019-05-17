@@ -128,9 +128,13 @@
     <ClCompile Include="glad\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader\Shader.cpp" />
+    <ClCompile Include="stb\stb_image.cpp" />
+    <ClCompile Include="stb\stb_image_write.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader\Shader.h" />
+    <ClInclude Include="stb\stb_image.h" />
+    <ClInclude Include="stb\stb_image_write.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,6 +19,9 @@
     <Filter Include="源文件\shader">
       <UniqueIdentifier>{a9eebeb3-0825-4b02-a1d1-a4fa0fe90b03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\stb">
+      <UniqueIdentifier>{ce3d1c2c-c284-46e6-b468-1cd237afd25a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,10 +33,22 @@
     <ClCompile Include="shader\Shader.cpp">
       <Filter>源文件\shader</Filter>
     </ClCompile>
+    <ClCompile Include="stb\stb_image.cpp">
+      <Filter>源文件\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="stb\stb_image_write.cpp">
+      <Filter>源文件\stb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader\Shader.h">
       <Filter>源文件\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="stb\stb_image.h">
+      <Filter>源文件\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="stb\stb_image_write.h">
+      <Filter>源文件\stb</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
