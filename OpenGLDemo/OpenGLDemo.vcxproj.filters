@@ -22,13 +22,22 @@
     <Filter Include="源文件\stb">
       <UniqueIdentifier>{ce3d1c2c-c284-46e6-b468-1cd237afd25a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\glad\src">
+      <UniqueIdentifier>{b687bc6c-3cf9-429d-9a4b-d0280bb7491e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\glad\include">
+      <UniqueIdentifier>{2412befb-0cf2-4919-a452-9ffb14f11073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\glad\include\glad">
+      <UniqueIdentifier>{3687339c-be74-42f3-b62b-d2e3e76fe613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\glad\include\KHR">
+      <UniqueIdentifier>{04f546c7-1ad7-45e4-9bdc-00a30a497738}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="glad\glad.c">
-      <Filter>源文件\glad</Filter>
     </ClCompile>
     <ClCompile Include="shader\Shader.cpp">
       <Filter>源文件\shader</Filter>
@@ -38,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="stb\stb_image_write.cpp">
       <Filter>源文件\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="glad\src\glad.c">
+      <Filter>源文件\glad\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="stb\stb_image_write.h">
       <Filter>源文件\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\include\glad\glad.h">
+      <Filter>源文件\glad\include\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\include\KHR\khrplatform.h">
+      <Filter>源文件\glad\include\KHR</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

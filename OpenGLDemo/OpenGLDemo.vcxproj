@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>G:\OpenGL\glfw-3.3\include;G:\OpenGL\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>G:\OpenGL\glfw-3.3\include;./glad/include/;$(IncludePath)</IncludePath>
     <LibraryPath>G:\OpenGL\glfw-3.3\build\src\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -125,13 +125,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="glad\glad.c" />
+    <ClCompile Include="glad\src\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader\Shader.cpp" />
     <ClCompile Include="stb\stb_image.cpp" />
     <ClCompile Include="stb\stb_image_write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="glad\include\glad\glad.h" />
+    <ClInclude Include="glad\include\KHR\khrplatform.h" />
     <ClInclude Include="shader\Shader.h" />
     <ClInclude Include="stb\stb_image.h" />
     <ClInclude Include="stb\stb_image_write.h" />
