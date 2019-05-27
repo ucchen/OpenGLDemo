@@ -7,6 +7,9 @@
 #include "stb/stb_image.h"
 #include "shader/Shader.h"
 
+#define screenWidth 800
+#define srceenHeight 600
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -19,7 +22,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Demo", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(screenWidth, srceenHeight, "Demo", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -144,18 +147,20 @@ int main()
 		ourShader.use();
 		ourShader.setFloat("mixValue", mixValue);
 
-		glm::mat4 trans = glm::mat4(1.f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.f, 0.f, 1.f));
-		//trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-		ourShader.setMat4("transform", glm::value_ptr(trans));
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
 		ourShader.use();
-		trans = glm::mat4(1.f);
-		trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.f));
-		ourShader.setMat4("transform", glm::value_ptr(trans));
+		glm::mat4 model = glm::mat4(1);
+		model = glm::rotate(model, glm::radians(-55.f), glm::vec3(1.f, 0.f, 0.f));
+
+		glm::mat4 view = glm::mat4(1);
+		view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f));
+
+		glm::mat4 projection = glm::mat4(1);
+		projection = glm::perspective(glm::radians(45.f), (float)screenWidth / srceenHeight, 0.1f, 100.f);
+
+		ourShader.setMat4("model", glm::value_ptr(model));
+		ourShader.setMat4("view", glm::value_ptr(view));
+		ourShader.setMat4("projection", glm::value_ptr(projection));
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
