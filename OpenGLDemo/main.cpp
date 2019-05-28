@@ -14,6 +14,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 float mixValue = 0.2f;
+glm::vec3 cameraPos = glm::vec3(0.f, 0.f, 3.f);
+glm::vec3 cameraFront = glm::vec3(0.f, 0.f, -3.f);
+glm::vec3 cameraUp = glm::vec3(0.f, 1.f, 0.f);
 
 int main()
 {
@@ -203,11 +206,7 @@ int main()
 			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 			glm::mat4 view = glm::mat4(1);
-			//view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f));
-			float radius = 10.f;
-			float camX = sin(glfwGetTime()) * radius;
-			float camZ = cos(glfwGetTime()) * radius;
-			view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 			glm::mat4 projection = glm::mat4(1);
 			projection = glm::perspective(glm::radians(45.f), (float)screenWidth / srceenHeight, 0.1f, 100.f);
@@ -253,5 +252,23 @@ void processInput(GLFWwindow *window)
 		mixValue -= 0.01f;
 		if (mixValue <= 0.f)
 			mixValue = 0.f;
+	}
+
+	float cameraSpeed = 0.05f;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		cameraPos += cameraFront * cameraSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		cameraPos -= cameraFront * cameraSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
 }
