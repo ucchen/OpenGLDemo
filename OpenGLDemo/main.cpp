@@ -14,6 +14,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 float mixValue = 0.2f;
+float deltaTime = 0.f;
+float lastTime = 0.f;
 glm::vec3 cameraPos = glm::vec3(0.f, 0.f, 3.f);
 glm::vec3 cameraFront = glm::vec3(0.f, 0.f, -3.f);
 glm::vec3 cameraUp = glm::vec3(0.f, 1.f, 0.f);
@@ -194,6 +196,9 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glBindVertexArray(VAO);
 
+		float currentTime = glfwGetTime();
+		deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
 
 		ourShader.use();
 		ourShader.setFloat("mixValue", mixValue);
@@ -254,7 +259,7 @@ void processInput(GLFWwindow *window)
 			mixValue = 0.f;
 	}
 
-	float cameraSpeed = 0.05f;
+	float cameraSpeed = 2.5f * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		cameraPos += cameraFront * cameraSpeed;
