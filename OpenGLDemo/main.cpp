@@ -203,7 +203,11 @@ int main()
 			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 			glm::mat4 view = glm::mat4(1);
-			view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f));
+			//view = glm::translate(view, glm::vec3(0.f, 0.f, -3.f));
+			float radius = 10.f;
+			float camX = sin(glfwGetTime()) * radius;
+			float camZ = cos(glfwGetTime()) * radius;
+			view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 
 			glm::mat4 projection = glm::mat4(1);
 			projection = glm::perspective(glm::radians(45.f), (float)screenWidth / srceenHeight, 0.1f, 100.f);
