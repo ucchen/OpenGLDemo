@@ -11,6 +11,8 @@
 #define srceenHeight 600
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
 float mixValue = 0.2f;
@@ -19,6 +21,14 @@ float lastTime = 0.f;
 glm::vec3 cameraPos = glm::vec3(0.f, 0.f, 3.f);
 glm::vec3 cameraFront = glm::vec3(0.f, 0.f, -3.f);
 glm::vec3 cameraUp = glm::vec3(0.f, 1.f, 0.f);
+
+bool firstMouse = true;
+float yaw = -90.0f;
+float pitch = 0.0f;
+float lastX = screenWidth / 2.0;
+float lastY = srceenHeight / 2.0;
+float fov = 45.0f;
+float sensitivity = 0.05f;
 
 int main()
 {
@@ -37,6 +47,10 @@ int main()
 
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -214,7 +228,7 @@ int main()
 			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 			glm::mat4 projection = glm::mat4(1);
-			projection = glm::perspective(glm::radians(45.f), (float)screenWidth / srceenHeight, 0.1f, 100.f);
+			projection = glm::perspective(glm::radians(fov), (float)screenWidth / srceenHeight, 0.1f, 100.f);
 
 			ourShader.setMat4("model", glm::value_ptr(model));
 			ourShader.setMat4("view", glm::value_ptr(view));
@@ -239,6 +253,48 @@ int main()
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch >= 89.f)
+		pitch = 89.f;
+	if (pitch <= -89.f)
+		pitch = -89.f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
+}
+
+void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset)
+{
+	if (fov >= 1.f && fov <= 45.f)
+		fov -= yoffset;
+	if (fov <= 1.f)
+		fov = 1.f;
+	if (fov >= 45.f)
+		fov = 45.f;
 }
 
 void processInput(GLFWwindow *window)
