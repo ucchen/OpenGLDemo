@@ -23,6 +23,7 @@ public:
 	glm::vec3 front;
 	glm::vec3 up;
 	glm::vec3 right;
+	glm::vec3 worldUp;
 
 	float yaw;
 	float pitch;
@@ -34,8 +35,11 @@ public:
 	Camera(glm::vec3 position = glm::vec3(0.f, 0.f, 0.f), glm::vec3 up = glm::vec3(0.f, 1.f, 0.f), float yaw = YAW, float pitch = PITCH);
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
+	glm::mat4 getLookAtView();
+
 	void processKeyBoard(Camera_Movement direction, float deltaTime);
 	void processMouseMove(float xoffset, float yoffset, bool constrainPitch = true);
+	void processMouseScroll(float xoffset, float yoffset);
 
 private:
 	void updateCameraVector();

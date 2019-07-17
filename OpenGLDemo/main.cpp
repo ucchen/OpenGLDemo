@@ -6,6 +6,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "stb/stb_image.h"
 #include "shader/Shader.h"
+#include "camera/Camera.h"
 
 #define screenWidth 800
 #define srceenHeight 600
@@ -18,17 +19,18 @@ void processInput(GLFWwindow *window);
 float mixValue = 0.2f;
 float deltaTime = 0.f;
 float lastTime = 0.f;
-glm::vec3 cameraPos = glm::vec3(0.f, 0.f, 3.f);
-glm::vec3 cameraFront = glm::vec3(0.f, 0.f, -3.f);
-glm::vec3 cameraUp = glm::vec3(0.f, 1.f, 0.f);
+// glm::vec3 cameraPos = glm::vec3(0.f, 0.f, 3.f);
+// glm::vec3 cameraFront = glm::vec3(0.f, 0.f, -3.f);
+// glm::vec3 cameraUp = glm::vec3(0.f, 1.f, 0.f);
+Camera camera(glm::vec3(0.f, 0.f, 3.f));
 
 bool firstMouse = true;
-float yaw = -90.0f;
-float pitch = 0.0f;
+// float yaw = -90.0f;
+// float pitch = 0.0f;
 float lastX = screenWidth / 2.0;
 float lastY = srceenHeight / 2.0;
-float fov = 45.0f;
-float sensitivity = 0.05f;
+// float fov = 45.0f;
+// float sensitivity = 0.05f;
 
 int main()
 {
@@ -217,23 +219,25 @@ int main()
 		ourShader.use();
 		ourShader.setFloat("mixValue", mixValue);
 
+		glm::mat4 view = glm::mat4(1);
+		//view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		view = camera.getLookAtView();
+
+		glm::mat4 projection = glm::mat4(1);
+		//projection = glm::perspective(glm::radians(fov), (float)screenWidth / srceenHeight, 0.1f, 100.f);
+		projection = glm::perspective(glm::radians(camera.zoom), (float)screenWidth / srceenHeight, 0.1f, 100.f);
+		
+		ourShader.setMat4("projection", glm::value_ptr(projection));
+		ourShader.setMat4("view", glm::value_ptr(view));
+
 		for (int i = 0; i < 10; ++i)
 		{
 			ourShader.use();
 			glm::mat4 model = glm::mat4(1);
 			model = glm::translate(model, cubePositions[i]);
 			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
-			glm::mat4 view = glm::mat4(1);
-			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
-			glm::mat4 projection = glm::mat4(1);
-			projection = glm::perspective(glm::radians(fov), (float)screenWidth / srceenHeight, 0.1f, 100.f);
-
 			ourShader.setMat4("model", glm::value_ptr(model));
-			ourShader.setMat4("view", glm::value_ptr(view));
-			ourShader.setMat4("projection", glm::value_ptr(projection));
-
+			
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
@@ -268,33 +272,35 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	float yoffset = lastY - ypos;
 	lastX = xpos;
 	lastY = ypos;
-
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	if (pitch >= 89.f)
-		pitch = 89.f;
-	if (pitch <= -89.f)
-		pitch = -89.f;
-
-	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraFront = glm::normalize(front);
+	
+	camera.processMouseMove(xoffset, yoffset);
+// 	xoffset *= sensitivity;
+// 	yoffset *= sensitivity;
+// 
+// 	yaw += xoffset;
+// 	pitch += yoffset;
+// 
+// 	if (pitch >= 89.f)
+// 		pitch = 89.f;
+// 	if (pitch <= -89.f)
+// 		pitch = -89.f;
+// 
+// 	glm::vec3 front;
+// 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+// 	front.y = sin(glm::radians(pitch));
+// 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+// 	cameraFront = glm::normalize(front);
 }
 
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset)
 {
-	if (fov >= 1.f && fov <= 45.f)
-		fov -= yoffset;
-	if (fov <= 1.f)
-		fov = 1.f;
-	if (fov >= 45.f)
-		fov = 45.f;
+// 	if (fov >= 1.f && fov <= 45.f)
+// 		fov -= yoffset;
+// 	if (fov <= 1.f)
+// 		fov = 1.f;
+// 	if (fov >= 45.f)
+// 		fov = 45.f;
+	camera.processMouseScroll(xoffset, yoffset);
 }
 
 void processInput(GLFWwindow *window)
@@ -315,21 +321,26 @@ void processInput(GLFWwindow *window)
 			mixValue = 0.f;
 	}
 
-	float cameraSpeed = 2.5f * deltaTime;
+
+	//float cameraSpeed = 2.5f * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		cameraPos += cameraFront * cameraSpeed;
+		//cameraPos += cameraFront * cameraSpeed;
+		camera.processKeyBoard(FORWARD, deltaTime);
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		cameraPos -= cameraFront * cameraSpeed;
+		//cameraPos -= cameraFront * cameraSpeed;
+		camera.processKeyBoard(BACKWARD, deltaTime);
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		camera.processKeyBoard(LEFT, deltaTime);
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		//cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		camera.processKeyBoard(RIGHT, deltaTime);
 	}
 }
