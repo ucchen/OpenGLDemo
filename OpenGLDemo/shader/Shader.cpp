@@ -80,6 +80,16 @@ void Shader::setMat4(const std::string &name, const float* mat4) const
 	glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, GL_FALSE, mat4);
 }
 
+void Shader::setVec3(const std::string & name, const float* vec3) const
+{
+	glUniform3fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, vec3);
+}
+
+void Shader::setVec3(const std::string & name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(m_ShaderID, name.c_str()), x, y, z);
+}
+
 void Shader::checkCompileErrors(GLuint shader, std::string type)
 {
 	int success;
