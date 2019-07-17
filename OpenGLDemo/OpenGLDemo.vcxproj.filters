@@ -34,6 +34,9 @@
     <Filter Include="源文件\glad\include\KHR">
       <UniqueIdentifier>{04f546c7-1ad7-45e4-9bdc-00a30a497738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\camera">
+      <UniqueIdentifier>{c60eda7d-5842-444b-b338-0bba0bce0c9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +54,9 @@
     <ClCompile Include="glad\src\glad.c">
       <Filter>源文件\glad\src</Filter>
     </ClCompile>
+    <ClCompile Include="camera\Camera.cpp">
+      <Filter>源文件\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader\Shader.h">
@@ -67,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="glad\include\KHR\khrplatform.h">
       <Filter>源文件\glad\include\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\Camera.h">
+      <Filter>源文件\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
