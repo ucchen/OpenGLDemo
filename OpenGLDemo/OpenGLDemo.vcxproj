@@ -127,7 +127,8 @@
   <ItemGroup>
     <ClCompile Include="camera\Camera.cpp" />
     <ClCompile Include="glad\src\glad.c" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_camera.cpp" />
+    <ClCompile Include="main_color.cpp" />
     <ClCompile Include="shader\Shader.cpp" />
     <ClCompile Include="stb\stb_image.cpp" />
     <ClCompile Include="stb\stb_image_write.cpp" />
