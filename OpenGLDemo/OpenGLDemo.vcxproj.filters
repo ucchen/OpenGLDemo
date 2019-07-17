@@ -54,9 +54,6 @@
     <ClCompile Include="camera\Camera.cpp">
       <Filter>源文件\camera</Filter>
     </ClCompile>
-    <ClCompile Include="main_camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main_color.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
