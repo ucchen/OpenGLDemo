@@ -40,8 +40,8 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -131,7 +131,7 @@ int main()
 		view = camera.getLookAtView();
 
 		glm::mat4 projection = glm::mat4(1);
-		projection = glm::perspective(glm::radians(camera.zoom), (float)screenWidth / srceenHeight, 0.1f, 100.f);
+		projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / srceenHeight, 0.1f, 100.f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		
@@ -176,7 +176,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset)
 {
-	camera.processMouseScroll(xoffset, yoffset);
+	camera.processMouseScroll(yoffset);
 }
 
 void processInput(GLFWwindow *window)
