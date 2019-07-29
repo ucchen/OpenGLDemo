@@ -16,7 +16,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
-Camera camera(glm::vec3(0.f, 0.f, 3.f));
+Camera camera(glm::vec3(0.f, 0.f, 8.f));
 float lastX = screenWidth / 2.0f;
 float lastY = srceenHeight / 2.0f;
 bool firstMouse = true;
@@ -24,8 +24,12 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastTime = 0.0f;
 
+//光源位置
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
 int main()
 {
+	//初始化相关函数
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -41,6 +45,7 @@ int main()
 
 	glfwMakeContextCurrent(window);
 
+	//回调相关（鼠标，滚轮等）
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
@@ -51,8 +56,10 @@ int main()
 		return -1;
 	}
 
-	Shader objectShader("./res/shaders/light.vs", "./res/shaders/light.fs");
+	Shader objectShader("./res/shaders/object.vs", "./res/shaders/object.fs");
+	Shader lightShader("./res/shaders/light.vs", "./res/shaders/light.fs");
 
+	//一个立方体顶点
 	float vertices[] = {
 		-0.5f, -0.5f, -0.5f,
 		0.5f, -0.5f, -0.5f,
@@ -110,6 +117,15 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	GLuint lightVAO;
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
 	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
@@ -123,6 +139,7 @@ int main()
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
+		//物品
 		objectShader.use();
 		objectShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		objectShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
@@ -140,6 +157,18 @@ int main()
 		objectShader.setMat4("model", glm::value_ptr(model));
 
 		glBindVertexArray(cubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//光源
+		lightShader.use();
+		lightShader.setMat4("projection", glm::value_ptr(projection));
+		lightShader.setMat4("view", glm::value_ptr(view));
+		model = glm::mat4(1.f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+		lightShader.setMat4("model", glm::value_ptr(model));
+
+		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
