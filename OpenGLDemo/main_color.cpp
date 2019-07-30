@@ -25,7 +25,7 @@ float deltaTime = 0.0f;
 float lastTime = 0.0f;
 
 //光源位置
-glm::vec3 lightPos(1.2f, 0.0f, 2.0f);
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
@@ -162,6 +162,9 @@ int main()
 
 		glBindVertexArray(cubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		lightPos.x = 1.f + sin(glfwGetTime()) * 2.f;
+		lightPos.y = sin(glfwGetTime() / 2.f) * 1.f;
 
 		//光源
 		lightShader.use();
