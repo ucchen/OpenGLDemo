@@ -147,6 +147,13 @@ int main()
 		objectShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		objectShader.setVec3("lightPos", glm::value_ptr(lightPos));
 		objectShader.setVec3("viewPos", glm::value_ptr(camera.Position));
+		objectShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		objectShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		objectShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+		objectShader.setFloat("material.shininess", 32.f);
+		objectShader.setVec3("light.ambient", 0.2f, 0.2, 0.2f);//环境光调暗
+		objectShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);//漫反射调为一半
+		objectShader.setVec3("light.specular", 1.f, 1.f, 1.f);//镜面光全力反射
 
 		glm::mat4 view = glm::mat4(1);
 		view = camera.getLookAtView();
