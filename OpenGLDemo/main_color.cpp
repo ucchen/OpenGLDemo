@@ -135,8 +135,10 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	GLuint diffuseMap = loadTexture("./res/textures/container2.png");
+	GLuint specularMap = loadTexture("./res/textures/container2_specular.png");
 	objectShader.use();
 	objectShader.setInt("material.diffuse", 0);
+	objectShader.setInt("material.specular", 1);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -153,8 +155,6 @@ int main()
 		objectShader.use();
 		objectShader.setVec3("light.position", glm::value_ptr(lightPos));
 		objectShader.setVec3("viewPos", glm::value_ptr(camera.Position));
-
-		objectShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
 		objectShader.setFloat("material.shininess", 64.f);
 		
 		objectShader.setVec3("light.ambient", 0.2f, 0.2, 0.2f);//环境光调暗
@@ -173,6 +173,8 @@ int main()
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		glBindVertexArray(cubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
