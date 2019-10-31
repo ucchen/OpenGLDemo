@@ -165,7 +165,7 @@ int main()
 
 		//物品
 		objectShader.use();
-		objectShader.setVec3("light.position", glm::value_ptr(lightPos));
+		objectShader.setVec3("light.position", glm::value_ptr(lightPos));//光源位置
 		objectShader.setVec3("viewPos", glm::value_ptr(camera.Position));
 		objectShader.setFloat("material.shininess", 64.f);
 		
@@ -173,7 +173,11 @@ int main()
 		objectShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);//漫反射调为一半
 		objectShader.setVec3("light.specular", 1.f, 1.f, 1.f);//镜面光全力反射
 
-		objectShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+		objectShader.setFloat("light.constant", 1.f);
+		objectShader.setFloat("light.linear", 0.09f);
+		objectShader.setFloat("light.quadratic", 0.032f);
+
+		//objectShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f); //定向光
 
 		glm::mat4 view = glm::mat4(1);
 		view = camera.getLookAtView();
