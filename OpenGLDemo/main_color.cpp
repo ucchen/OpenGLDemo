@@ -105,6 +105,18 @@ int main()
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
 
 	GLuint cubeVAO;
 	GLuint VBO;
@@ -161,6 +173,8 @@ int main()
 		objectShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);//漫反射调为一半
 		objectShader.setVec3("light.specular", 1.f, 1.f, 1.f);//镜面光全力反射
 
+		objectShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+
 		glm::mat4 view = glm::mat4(1);
 		view = camera.getLookAtView();
 		glm::mat4 projection = glm::mat4(1);
@@ -168,31 +182,38 @@ int main()
 		objectShader.setMat4("projection", glm::value_ptr(projection));
 		objectShader.setMat4("view", glm::value_ptr(view));
 
-		glm::mat4 model = glm::mat4(1.0f);
-		objectShader.setMat4("model", glm::value_ptr(model));
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (int i = 0; i < 10; ++i)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			objectShader.setMat4("model", glm::value_ptr(model));
 
-		lightPos.x = 1.f + sin(glfwGetTime()) * 2.f;
-		lightPos.y = sin(glfwGetTime() / 2.f) * 1.f;
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
-		//光源
-		lightShader.use();
-		lightShader.setMat4("projection", glm::value_ptr(projection));
-		lightShader.setMat4("view", glm::value_ptr(view));
-		model = glm::mat4(1.f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f));
-		lightShader.setMat4("model", glm::value_ptr(model));
 
-		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+// 		lightPos.x = 1.f + sin(glfwGetTime()) * 2.f;
+// 		lightPos.y = sin(glfwGetTime() / 2.f) * 1.f;
+
+// 		//光源
+// 		lightShader.use();
+// 		lightShader.setMat4("projection", glm::value_ptr(projection));
+// 		lightShader.setMat4("view", glm::value_ptr(view));
+// 		model = glm::mat4(1.f);
+// 		model = glm::translate(model, lightPos);
+// 		model = glm::scale(model, glm::vec3(0.2f));
+// 		lightShader.setMat4("model", glm::value_ptr(model));
+// 
+// 		glBindVertexArray(lightVAO);
+// 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
