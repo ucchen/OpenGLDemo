@@ -166,6 +166,8 @@ int main()
 		//物品
 		objectShader.use();
 		objectShader.setVec3("light.position", glm::value_ptr(lightPos));//光源位置
+		objectShader.setVec3("light.direction", glm::value_ptr(camera.Front));
+		objectShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
 		objectShader.setVec3("viewPos", glm::value_ptr(camera.Position));
 		objectShader.setFloat("material.shininess", 64.f);
 		

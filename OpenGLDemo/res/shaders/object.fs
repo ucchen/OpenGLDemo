@@ -18,7 +18,9 @@ uniform Material material;
 struct Light
 {
 	vec3 position;//灯源位置
-	// vec3 direction;//定向光源
+	vec3 direction;//定向光源
+    float cutOff;//
+    float outerCutOff;
 
 	vec3 ambient;//环境光
 	vec3 diffuse;//反射光
@@ -34,6 +36,10 @@ uniform Light light;
 
 void main()
 {
+	vec3 lightDir = normalize(light.position - FragPos);
+	float theta = dot(lightDir, normalize(-light.direction)); 
+	if (theta > light.cutOff)
+	{
 	//环境光照
 	vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
 
@@ -59,5 +65,12 @@ void main()
 	specular *= attenuation;
 
 	vec3 result = ambient + diffuse + specular;
-	FragColor = vec4(result, 1.0); 
+	FragColor = vec4(result, 1.0); 		
+	}
+	else
+	{
+		FragColor = vec4(light.ambient * texture(material.diffuse, TexCoords).rgb, 1.0);
+	}
+
+
 }
